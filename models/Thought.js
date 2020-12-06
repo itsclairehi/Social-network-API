@@ -1,4 +1,6 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
+var dayjs = require('dayjs')
+
 
 const ReactionSchema = new Schema({
     reactionId: {
@@ -16,12 +18,19 @@ const ReactionSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
         //format timestamp
-        // get: createdAtVal => dateFormat(createdAtVal)
+        get: createdAtVal => dayjs(createdAtVal).format('MM/DD/YYYY')
+
     }
 },
-) 
+    {
+        toJSON: {
+            getters: true
+        },
+        // id: false
+    }
+)
 
 const ThoughtSchema = new Schema({
     thoughtText: {
@@ -35,7 +44,7 @@ const ThoughtSchema = new Schema({
         type: Date,
         default: Date.now,
         //format timestamp
-        // get: createdAtVal => dateFormat(createdAtVal)
+        get: createdAtVal => dayjs(createdAtVal).format('MM/DD/YYYY')
     },
     username: {
         type: String,
@@ -43,17 +52,18 @@ const ThoughtSchema = new Schema({
     },
     reactions: [ReactionSchema]
 },
-{
-    toJSON: {
-        virtuals: true,
-        getters: true
-    },
-    id: false
-})
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        },
+        id: false
+    })
 
 ThoughtSchema.virtual('reactionCount').get(function () {
     //reduce takes an accumulator and current value parameter and walks through an array, adding to accumulator each time
-    return this.reactions.reduce((total, reaction)=> total + reaction.replies.length + 1, 0);
+    // return this.reactions.reduce((total, reaction) => total + reaction.replies.length + 1, 0);
+    return this.reactions.length
 });
 
 

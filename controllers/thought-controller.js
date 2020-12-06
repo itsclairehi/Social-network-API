@@ -1,7 +1,5 @@
 const { User, Thought } = require('../models');
 
-// define get, post etc functions here
-
 const thoughtController = {
     //get all thoughts
     getAllThoughts(req, res) {
@@ -16,7 +14,6 @@ const thoughtController = {
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.id })
             .then(dbThoughtData => {
-                // If no pizza is found, send 404
                 if (!dbThoughtData) {
                     res.status(404).json({ message: 'No Thought found with this id!' });
                     return;
@@ -51,7 +48,7 @@ const thoughtController = {
             })
 
     },
-    //update thought DO I HAVE TO UPDATE IN USER TOO?
+    //update thought 
     updateThought({ params, body }, res) {
         Thought.findOneAndUpdate({ _id: params.id }, body, { new: true })
             .then(dbThoughtData => {
@@ -79,13 +76,12 @@ const thoughtController = {
     //reactions routes
     //create reaction
     addReaction({ params, body }, res,) {
-        console.log(body);
+        console.log("HERE'S THE BODY ", body);
         
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
-            { $push: { reactions: body } },
+            { $push: {reactions: body} },
             { new: true, runValidators: true }
-
         )
             .then(dbReactionData => {
                 if (!dbReactionData) {
@@ -97,10 +93,10 @@ const thoughtController = {
             .catch(err => res.json(err))
     },
     //remove Reaction
-    removeReaction({ params }, res) {
+    removeReaction({ params, body }, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
-            { $pull: { reactions: { reactionId: params.reactionId } } },
+            { $pull: { reactions: { reactionId: body.reactionId } } },
             { new: true }
         )
             .then(dbThoughtData => res.json(dbThoughtData))
