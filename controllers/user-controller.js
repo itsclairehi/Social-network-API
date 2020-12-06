@@ -67,9 +67,43 @@ const userController = {
     },
 
     //friend routes
-    //addFriend()
-    //deletefriend
+    addFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $push: { friends: params.friendId } },
+            { new: true }
+        )
+            .then(dbFriendData => {
+                if (!dbFriendData) {
+                    res.status(404).json({ message: 'no user found with this id' })
+                    return
+                }
+
+                res.json(dbFriendData)
+            })
+            .catch(err => res.json(err))
+    },
+
+    deleteFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $pull: { friends: params.friendId} },
+            { new: true }
+        )
+            .then(dbFriendData => {
+                if (!dbFriendData) {
+                    res.status(404).json({ message: 'no user found with this id' })
+                    return
+                }
+
+                res.json(dbFriendData)
+            })
+            .catch(err => res.json(err))
+    }
+
 }
+
+
 
 //bonus: remove associated thoughts when user is deleted
 

@@ -14,5 +14,9 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 NEED TO DO:
 format time stamp
 test all routes
-make sure connection goes all the way to server
-friends routes in user-controller.js
+
+
+populate with corrent data (take out versions and add usernames, thought text etc)
+
+PROBLEMS:
+get friend routes to work

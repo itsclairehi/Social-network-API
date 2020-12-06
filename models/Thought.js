@@ -20,7 +20,8 @@ const ReactionSchema = new Schema({
         //format timestamp
         // get: createdAtVal => dateFormat(createdAtVal)
     }
-}) 
+},
+) 
 
 const ThoughtSchema = new Schema({
     thoughtText: {

@@ -16,28 +16,28 @@ const UserSchema = new Schema({
     thoughts: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Thought' 
+            ref: 'Thought'
         }
     ],
     friends: [{
         type: Schema.Types.ObjectId,
-            ref: 'User'
+        ref: 'User',
+        
     }]
 },
-{
-    toJSON: {
-        virtuals: true,
-        getters: true
-    },
-    id: false
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        },
+        id: false
 
-});
+    });
 
 //virtuals
 
 UserSchema.virtual('friendCount').get(function () {
-    //reduce takes an accumulator and current value parameter and walks through an array, adding to accumulator each time
-    return this.friends.reduce((total, friend)=> total + friend.replies.length + 1, 0);
+    return this.friends.length
 });
 // create the User model using the UserSchema
 const User = model('User', UserSchema);
